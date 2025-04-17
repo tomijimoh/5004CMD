@@ -3,12 +3,14 @@ import pandas as pd
 # Load the data
 df = pd.read_csv("trips_by_distance.csv")
 
+df = df.fillna(df.mean(numeric_only = True)).dropna()
+
 # Average weekly number of short-distance travellers
-weekly_short_trips = df.groupby('Week')['Number of Trips 10-25'].mean()
+weekly_short_trips = df.groupby('Week')[['Number of Trips <1', 'Number of Trips >=500']].mean()
 print(weekly_short_trips)
 
 
-total_staying_home = df['Population Staying at Home'].sum()
+total_staying_home = df['Population Staying at Home'].mean()
 # print(f"Total people staying at home: {total_staying_home:,.0f}")
 
 weekly_avg = df.groupby('Week')['Population Staying at Home'].mean()
@@ -28,12 +30,14 @@ distance_cols = [
 ]
 
 # Total number of trips by distance
-trip_totals = df[distance_cols].sum().sort_index()
+trip_totals = df[distance_cols].sum()
+
+
 print("Total number of trips by distance range:\n", trip_totals)
 # define midpoint distances for each grouped mile
 midpoints = [0.5, 2, 4, 7.5, 17.5, 37.5, 75, 175, 375, 500]
 
 # calculate weighted average distance
-weighted_avg_distance = (trip_totals * midpoints).sum() / trip_totals.sum()
+weighted_avg_distance = (trip_totals * midpoints).sum() / df['Population Not Staying at Home'].sum()
 
 print ("Average miles traveled per week",weighted_avg_distance)
