@@ -8,7 +8,7 @@ df = pd.read_csv("Trips_by_Distance.csv")
 df_10_25 = df[df['Number of Trips 10-25'] > 10_000_000]
 df_50_100 = df[df['Number of Trips 50-100'] > 10_000_000]
 
-# Extract just dates (if you need them)
+# Dates extraction
 dates_10_25 = df_10_25['Date']
 dates_50_100 = df_50_100['Date']
 
