@@ -1,4 +1,5 @@
 import pandas as pd
+import matplotlib.pyplot as plt
 
 # Load the data
 df = pd.read_csv("trips_by_distance.csv")
@@ -41,3 +42,24 @@ midpoints = [0.5, 2, 4, 7.5, 17.5, 37.5, 75, 175, 375, 500]
 weighted_avg_distance = (trip_totals * midpoints).sum() / df['Population Not Staying at Home'].sum()
 
 print ("Average miles traveled per week",weighted_avg_distance)
+
+# Graph for staying at home
+plt.figure(figsize=(10, 5))
+plt.plot(home_week_average['Week'], home_week_average['Population Staying at Home'], color='orange', linestyle= '-')
+plt.title('Average Weekly Population Staying at Home')
+plt.xlabel('Week')
+plt.ylabel('Number of People')
+plt.grid(True)
+
+plt.savefig("weekly_home_avg.png")
+
+# Graph for distance travelled
+plt.figure(figsize=(12, 6))
+total_trips.plot(kind='bar', color='orange')
+plt.title('Trip Distribution by Distance')
+plt.xlabel('Distance Range (miles)')
+plt.ylabel('Number of Trips')
+plt.xticks(ticks=range(len(distance_column)), labels=distance_column, rotation=45)
+plt.tight_layout()
+plt.savefig("trip_distance_distribution.png")
+
